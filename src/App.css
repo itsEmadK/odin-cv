@@ -9,11 +9,47 @@ main {
   justify-content: center;
 }
 
-main form {
+main .resume {
+  flex: 2.5;
+}
+
+aside {
   align-self: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
   flex: 1;
 }
 
-main .resume {
-  flex: 2.5;
+aside form {
+  flex: 1;
+}
+
+.educations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  margin-top: 0.75em;
+  padding: 1em;
+  border-radius: 8px;
+}
+
+.educations-header.expanded {
+  border-radius: 8px 8px 0 0;
+}
+
+.educations-header button {
+  width: 25px;
+  height: 25px;
+  appearance: none;
+  border: none;
+  background-color: black;
+  mask: url(./assets/chevron-down.svg);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.educations-header button.collapse {
+  transform: rotate(180deg);
 }
