@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import '../styles/resume.css';
 
 function ResumeHeader({ name, email, phone, address }) {
@@ -14,16 +13,82 @@ function ResumeHeader({ name, email, phone, address }) {
   );
 }
 
-export default function Resume() {
+function ResumeBody({ educations, jobs }) {
+  return (
+    <div className="resume-body">
+      <div className="educations-container">
+        <h2>Education</h2>
+        <ul>
+          {educations.map((education) => {
+            const formattedStartDate = `${education.startDate.getMonth()}/${education.startDate.getFullYear()}`;
+            let formattedEndDate = '';
+            if (education.endDate) {
+              formattedEndDate = `${education.endDate.getMonth()}/${education.endDate.getFullYear()}`;
+            } else {
+              formattedEndDate = 'present day';
+            }
+            return (
+              <li
+                key={
+                  education.university +
+                  education.startDate +
+                  education.endDate +
+                  education.city +
+                  education.field
+                }
+                className="education-item"
+              >
+                <p className="date">
+                  {`${formattedStartDate}`} - {formattedEndDate}
+                </p>
+                <p className="university">{education.university}</p>
+                <p className="city">{education.city}</p>
+                <p className="field">{education.field}</p>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div className="jobs-container">
+        <h2>Professional Experience</h2>
+        <ul>
+          {jobs.map((job) => {
+            const formattedStartDate = `${job.startDate.getMonth()}/${job.startDate.getFullYear()}`;
+            let formattedEndDate = '';
+            if (job.endDate) {
+              formattedEndDate = `${job.endDate.getMonth()}/${job.endDate.getFullYear()}`;
+            } else {
+              formattedEndDate = 'present day';
+            }
+
+            return (
+              <li key={job.company + job.startDate + job.endDate + job.role} className="job-item">
+                <p className="date">
+                  {formattedStartDate} - {formattedEndDate}
+                </p>
+                <p className="company">{job.company}</p>
+                <p className="location">{job.location}</p>
+                <p className="role">{job.role}</p>
+                <p className="description">{job.description}</p>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default function Resume({ person }) {
   return (
     <div className="resume">
       <ResumeHeader
-        name="John Doe"
-        email="john.doe@gmail.com"
-        phone="09030931020"
-        address="Tehran, Iran"
+        name={person.name}
+        email={person.email}
+        phone={person.phone}
+        address={person.address}
       ></ResumeHeader>
-      {/* <ResumeBody></ResumeBody> */}
+      <ResumeBody educations={person.educations} jobs={person.jobs}></ResumeBody>
     </div>
   );
 }

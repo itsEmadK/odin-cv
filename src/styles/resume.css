@@ -4,6 +4,9 @@
   padding: 1em;
   text-align: center;
 }
+ul {
+  list-style-type: none;
+}
 
 .header .details {
   margin-top: 1em;
@@ -32,4 +35,48 @@
 }
 .details .address {
   background-image: url('../assets/map-marker.svg');
+}
+
+.resume-body {
+  padding: 2em;
+}
+
+.educations-container h2,
+.jobs-container h2 {
+  color: #0e374e;
+  background-color: rgb(238, 238, 238);
+  padding: 0.3em;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.educations-container ul,
+.jobs-container ul {
+  display: grid;
+  gap: 0.5em;
+}
+
+.job-item,
+.education-item {
+  padding: 1em 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25em 1em;
+  /* background-color: red; */
+}
+
+.education-item .date,
+.job-item .date {
+  min-width: 150px;
+}
+
+.education-item .university,
+.job-item .company {
+  font-weight: 700;
+}
+
+.job-item .description {
+  max-width: 42ch;
+  grid-column-start: 2;
 }
