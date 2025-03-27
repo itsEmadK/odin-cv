@@ -1,0 +1,35 @@
+.header {
+  background-color: #0e374e;
+  color: white;
+  padding: 1em;
+  text-align: center;
+}
+
+.header .details {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+  gap: 1.5em;
+  flex-wrap: wrap;
+}
+
+.details .email,
+.details .phone,
+.details .address {
+  --icon-size: 20px;
+  background-repeat: no-repeat;
+  background-position: center left;
+  background-size: var(--icon-size);
+  padding-left: calc(var(--icon-size) + 4px);
+}
+
+.details .email {
+  background-image: url('../assets/email.svg');
+}
+
+.details .phone {
+  background-image: url('../assets/phone.svg');
+}
+.details .address {
+  background-image: url('../assets/map-marker.svg');
+}
