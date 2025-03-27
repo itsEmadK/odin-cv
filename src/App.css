@@ -25,7 +25,8 @@ aside form {
   flex: 1;
 }
 
-.educations-header {
+.educations-header,
+.jobs-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,11 +36,13 @@ aside form {
   border-radius: 8px;
 }
 
-.educations-header.expanded {
+.educations-header.expanded,
+.jobs-header.expanded {
   border-radius: 8px 8px 0 0;
 }
 
-.educations-header button {
+.educations-header button,
+.jobs-header button {
   width: 25px;
   height: 25px;
   appearance: none;
@@ -50,6 +53,7 @@ aside form {
   transition: transform 0.2s;
 }
 
-.educations-header button.collapse {
+.educations-header button.collapse,
+.jobs-header button.collapse {
   transform: rotate(180deg);
 }
