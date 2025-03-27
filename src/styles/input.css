@@ -6,7 +6,6 @@ label {
 }
 
 label input {
-  margin-left: 8px;
   padding: 8px 6px;
   appearance: none;
   background-color: rgb(231, 231, 231);

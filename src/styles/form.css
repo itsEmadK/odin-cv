@@ -1,0 +1,10 @@
+form {
+  display: grid;
+  gap: 1em;
+  max-width: 400px;
+  padding: 1.5em 1em;
+  margin: 1em;
+  background-color: rgb(244, 243, 243);
+  border-radius: 8px;
+  letter-spacing: 1px;
+}
