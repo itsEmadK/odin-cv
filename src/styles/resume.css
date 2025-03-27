@@ -1,3 +1,9 @@
+.resume {
+  box-shadow: -2px -2px 8px rgb(235, 235, 235);
+  background-color: white;
+  max-width: 1000px;
+}
+
 .header {
   background-color: #0e374e;
   color: white;

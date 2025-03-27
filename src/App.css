@@ -1,0 +1,19 @@
+body {
+  background-color: rgb(241, 241, 241);
+}
+
+main {
+  display: flex;
+  gap: 1.5em;
+  padding: 2em;
+  justify-content: center;
+}
+
+main form {
+  align-self: start;
+  flex: 1;
+}
+
+main .resume {
+  flex: 2.5;
+}
