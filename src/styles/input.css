@@ -7,7 +7,7 @@ label {
 }
 
 label input {
-  padding: 8px 6px;
+  padding: 12px 6px;
   appearance: none;
   background-color: rgb(241, 241, 241);
   outline: 1px solid rgb(231, 231, 231);
