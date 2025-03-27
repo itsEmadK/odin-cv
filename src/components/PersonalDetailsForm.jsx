@@ -1,7 +1,7 @@
 import '../styles/form.css';
 import Input from './Input';
 
-export default function PersonalDetailsForm(person, onChange) {
+export default function PersonalDetailsForm({ person, onChange }) {
   function handleNameChange(e) {
     onChange({ ...person, name: e.target.value });
   }
