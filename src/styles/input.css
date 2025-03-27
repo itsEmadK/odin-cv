@@ -1,0 +1,24 @@
+label {
+  display: flex;
+  font-weight: 700;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+label input {
+  margin-left: 8px;
+  padding: 8px 6px;
+  appearance: none;
+  background-color: rgb(231, 231, 231);
+  outline: 1px solid rgb(231, 231, 231);
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: outline 0.1s;
+}
+
+label input:focus {
+  appearance: none;
+  border: none;
+  outline: 2px solid rgb(18, 77, 144);
+}
