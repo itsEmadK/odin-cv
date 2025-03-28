@@ -19,6 +19,7 @@ aside {
   flex-direction: column;
   justify-content: end;
   flex: 1;
+  gap: 1.5em;
 }
 
 aside form {
@@ -31,7 +32,6 @@ aside form {
   justify-content: space-between;
   align-items: center;
   background-color: white;
-  margin-top: 0.75em;
   padding: 1em;
   border-radius: 8px;
 }

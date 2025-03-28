@@ -1,6 +1,12 @@
+ul.jobs {
+  margin-top: 0.5em;
+  display: grid;
+  gap: 0.5em;
+}
+
 .job-item {
   background-color: white;
-  margin: 12px 0px;
+  /* margin: 12px 0px; */
   padding: 1em;
 }
 
