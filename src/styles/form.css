@@ -38,3 +38,8 @@ form .buttons-container .delete {
   margin-right: auto;
   background-color: rgb(215, 215, 215);
 }
+
+textarea.job-desc {
+  min-height: calc(3em * 1.2);
+  padding: 0.25em;
+}
