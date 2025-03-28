@@ -62,7 +62,10 @@ function ResumeBody({ educations, jobs }) {
             }
 
             return (
-              <li key={job.company + job.startDate + job.endDate + job.role} className="job-item">
+              <li
+                key={job.company + job.startDate + job.endDate + job.role}
+                className="job-item"
+              >
                 <p className="date">
                   {formattedStartDate} - {formattedEndDate}
                 </p>
@@ -79,16 +82,29 @@ function ResumeBody({ educations, jobs }) {
   );
 }
 
-export default function Resume({ person }) {
+export default function Resume({ person, headerPosition }) {
+  let headerPosClassName = '';
+
+  if (headerPosition === 'top') {
+    headerPosClassName = 'header-on-top';
+  } else if (headerPosition === 'left') {
+    headerPosClassName = 'header-on-left';
+  } else {
+    headerPosClassName = 'header-on-right';
+  }
+
   return (
-    <div className="resume">
+    <div className={'resume ' + headerPosClassName}>
       <ResumeHeader
         name={person.name}
         email={person.email}
         phone={person.phone}
         address={person.address}
       ></ResumeHeader>
-      <ResumeBody educations={person.educations} jobs={person.jobs}></ResumeBody>
+      <ResumeBody
+        educations={person.educations}
+        jobs={person.jobs}
+      ></ResumeBody>
     </div>
   );
 }

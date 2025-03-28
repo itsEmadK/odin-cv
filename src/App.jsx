@@ -1,19 +1,22 @@
 import './App.css';
 import Resume from './components/Resume';
-import { person as personData } from './person.js';
+import { person as samplePerson } from './person.js';
 import { useState } from 'react';
 import PersonalDetailsForm from './components/PersonalDetailsForm.jsx';
 import EducationSection from './components/Educations.jsx';
 import JobSection from './components/Jobs.jsx';
+import SideMenu from './components/SideMenu.jsx';
 
 function App() {
-  const [person, setPerson] = useState(personData);
+  const [person, setPerson] = useState(samplePerson);
 
   const educations = person.educations;
   const [hiddenEducationIDs, setHiddenEducationIDs] = useState([]);
 
   const jobs = person.jobs;
   const [hiddenJobIDs, setHiddenJobIDs] = useState([]);
+
+  const [headerPos, setHeaderPos] = useState('top');
 
   function handlePersonInfoChange(newPerson) {
     setPerson(newPerson);
@@ -89,9 +92,32 @@ function App() {
     });
   }
 
+  function handleHeaderPosChange(pos) {
+    setHeaderPos(pos);
+  }
+  function handleClearResume() {
+    setPerson({
+      name: '',
+      address: '',
+      email: '',
+      phone: '',
+      educations: [],
+      jobs: [],
+    });
+  }
+  function handleLoadSample() {
+    setPerson({ ...samplePerson });
+  }
+
   return (
     <main>
       <aside>
+        <SideMenu
+          preferredHeaderPosition={headerPos}
+          onClearClicked={handleClearResume}
+          onLoadSampleClicked={handleLoadSample}
+          onPreferredHeaderPosChanged={handleHeaderPosChange}
+        ></SideMenu>
         <PersonalDetailsForm
           person={person}
           onChange={handlePersonInfoChange}
@@ -131,6 +157,7 @@ function App() {
             .slice()
             .sort((a, b) => (a.startDate < b.startDate ? -1 : 1)),
         }}
+        headerPosition={headerPos}
       ></Resume>
     </main>
   );

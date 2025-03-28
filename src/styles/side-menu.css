@@ -1,0 +1,57 @@
+.side-menu {
+  background-color: white;
+  padding: 1em;
+  border-radius: 8px;
+  /* position: sticky;
+  top: 0px;
+  z-index: 1; */
+}
+
+.side-menu button {
+  appearance: none;
+  border: 2px solid;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.side-menu button.load {
+  background-color: transparent;
+  font-weight: bold;
+}
+.side-menu button.clear {
+  font-weight: bold;
+  color: rgb(245, 0, 0);
+  background-color: transparent;
+}
+
+.side-menu .layouts-container {
+  display: flex;
+  margin-top: 1em;
+  justify-content: center;
+  gap: 0.75em;
+}
+
+.side-menu .header-on-top,
+.side-menu .header-on-left,
+.side-menu .header-on-right {
+  width: 40px;
+  height: 40px;
+  border-radius: 0;
+  border-width: 1px;
+}
+.side-menu .header-on-top.selected,
+.side-menu .header-on-left.selected,
+.side-menu .header-on-right.selected {
+  border: 3px solid black;
+}
+
+.side-menu .header-on-top {
+  background: linear-gradient(180deg, #0e374e 30%, white 30%);
+}
+.side-menu .header-on-right {
+  background: linear-gradient(90deg, white 70%, #0e374e 70%);
+}
+.side-menu .header-on-left {
+  background: linear-gradient(-90deg, white 70%, #0e374e 70%);
+}

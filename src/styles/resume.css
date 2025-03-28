@@ -4,6 +4,15 @@
   max-width: 1000px;
 }
 
+.resume.header-on-right {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.resume.header-on-left {
+  display: flex;
+}
+
 .header {
   background-color: #0e374e;
   color: white;
