@@ -1,81 +1,67 @@
-import { useState } from 'react';
 import '../styles/form.css';
 import Input from './Input';
 
-export default function JobForm({ job, onSubmit, onDelete, onCancel }) {
-  const [company, setCompany] = useState(job ? job.company : '');
-  const [role, setRole] = useState(job ? job.role : '');
-  const [startDate, setStartDate] = useState(job ? job.startDate : '');
-  const [endDate, setEndDate] = useState(
-    job && job.endDate ? job.endDate : ''
-  );
-  const [location, setLocation] = useState(job ? job.location : '');
-  const [description, setDescription] = useState(
-    job ? job.description : ''
-  );
-
+export default function JobForm({
+  formInfo,
+  onSubmit,
+  onChange,
+  onDelete,
+  onCancel,
+}) {
   function handleCompanyChange(e) {
-    setCompany(e.target.value);
+    onChange({ ...formInfo, company: e.target.value });
   }
   function handleRoleChange(e) {
-    setRole(e.target.value);
+    onChange({ ...formInfo, role: e.target.value });
   }
   function handleStartDateChange(e) {
-    setStartDate(new Date(e.target.value));
+    onChange({ ...formInfo, startDate: new Date(e.target.value) });
   }
   function handleEndDateChange(e) {
-    setEndDate(new Date(e.target.value));
+    onChange({ ...formInfo, endDate: new Date(e.target.value) });
   }
   function handleLocationChange(e) {
-    setLocation(e.target.value);
+    onChange({ ...formInfo, location: e.target.value });
   }
-
   function handleDescriptionChange(e) {
-    setDescription(e.target.value);
+    onChange({ ...formInfo, description: e.target.value });
   }
 
   function handleFormSubmit(e) {
     e.preventDefault();
-    onSubmit({
-      company,
-      role,
-      startDate,
-      endDate,
-      location,
-      description,
-    });
+    onSubmit();
   }
 
   return (
     <form onSubmit={handleFormSubmit}>
       <Input
-        value={company}
+        value={formInfo.company}
         label={'Company'}
         required={true}
         onChange={handleCompanyChange}
       ></Input>
       <Input
-        value={role}
+        value={formInfo.role}
         label={'Role'}
         required={true}
         onChange={handleRoleChange}
       ></Input>
       <Input
-        value={!!startDate && startDate.toISOString().split('T')[0]}
+        value={!!formInfo.startDate && formInfo.startDate.toISOString().split('T')[0]}
         label={'Start Date'}
         required={true}
         type="date"
         onChange={handleStartDateChange}
       ></Input>
       <Input
-        value={!!endDate && endDate.toISOString().split('T')[0]}
+        value={!!formInfo.endDate && formInfo.endDate.toISOString().split('T')[0]}
         label={'End Date'}
         required={false}
         type="date"
         onChange={handleEndDateChange}
       ></Input>
       <Input
-        value={location}
+        value={formInfo.location}
         label={'Location'}
         required={false}
         onChange={handleLocationChange}
@@ -84,13 +70,13 @@ export default function JobForm({ job, onSubmit, onDelete, onCancel }) {
         Description
         <textarea
           className="job-desc"
-          value={description}
+          value={formInfo.description}
           onChange={handleDescriptionChange}
         />
       </label>
 
       <div className="buttons-container">
-        {job && (
+        {formInfo && (
           <button onClick={onDelete} className="delete" type="button">
             Delete
           </button>

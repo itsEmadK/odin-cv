@@ -20,9 +20,24 @@ function App() {
 
   const [isEditingEdu, setIsEditingEdu] = useState(false);
   const [editingEduID, setEditingEduID] = useState(null);
+  const [eduFormInfo, setEduFormInfo] = useState({
+    university: '',
+    field: '',
+    city: '',
+    startDate: '',
+    endDate: '',
+  });
 
   const [isEditingJob, setIsEditingJob] = useState(false);
   const [editingJobID, setEditingJobID] = useState(null);
+  const [jobFormInfo, setJobFormInfo] = useState({
+    company: '',
+    role: '',
+    location: '',
+    description: '',
+    startDate: '',
+    endDate: '',
+  });
 
   function handlePersonInfoChange(newPerson) {
     setPerson(newPerson);
@@ -55,9 +70,13 @@ function App() {
   function handleEducationClick(id) {
     setIsEditingEdu(true);
     setEditingEduID(id);
+    setEduFormInfo({
+      ...educations.find((edu) => edu.id === id),
+      id: undefined,
+    });
   }
 
-  function handleEducationEdit(newEducationInfo) {
+  function handleEducationEdit() {
     let newEducations = educations;
     if (editingEduID !== null) {
       const oldEducation = educations.find(
@@ -68,7 +87,7 @@ function App() {
       );
       newEducations = [
         ...newEducations,
-        { id: oldEducation.id, ...newEducationInfo },
+        { id: oldEducation.id, ...eduFormInfo },
       ];
     } else {
       const newID =
@@ -76,13 +95,8 @@ function App() {
           educations.length - 1
         ].id + 1;
 
-      newEducations = [
-        ...newEducations,
-        { id: newID, ...newEducationInfo },
-      ];
+      newEducations = [...newEducations, { id: newID, ...eduFormInfo }];
     }
-
-    console.log(newEducations);
 
     setPerson({ ...person, educations: newEducations });
     setEditingEduID(null);
@@ -105,6 +119,10 @@ function App() {
     setIsEditingEdu(false);
   }
 
+  function handleEducationFormChange(formInfo) {
+    setEduFormInfo({ ...formInfo });
+  }
+
   function handleJobsExpand() {
     setIsJobsExpanded(!isJobsExpanded);
   }
@@ -112,21 +130,25 @@ function App() {
   function handleJobClick(id) {
     setIsEditingJob(true);
     setEditingJobID(id);
+    setJobFormInfo({
+      ...jobs.find((job) => job.id === id),
+      id: undefined,
+    });
   }
 
-  function handleJobEdit(newJobInfo) {
+  function handleJobEdit() {
     let newJobs = jobs;
     if (editingJobID !== null) {
       const oldJob = jobs.find((job) => job.id === editingJobID);
       newJobs = newJobs.filter((job) => job.id !== oldJob.id);
-      newJobs = [...newJobs, { id: oldJob.id, ...newJobInfo }];
+      newJobs = [...newJobs, { id: oldJob.id, ...jobFormInfo }];
     } else {
       const newID =
         jobs.slice().sort((a, b) => (a.id < b.id ? -1 : 1))[
           jobs.length - 1
         ].id + 1;
 
-      newJobs = [...newJobs, { id: newID, ...newJobInfo }];
+      newJobs = [...newJobs, { id: newID, ...jobFormInfo }];
     }
 
     setPerson({ ...person, jobs: newJobs });
@@ -146,6 +168,10 @@ function App() {
   function handleJobCancelEdit() {
     setEditingJobID(null);
     setIsEditingJob(false);
+  }
+
+  function handleJobFormChange(formInfo) {
+    setJobFormInfo({ ...formInfo });
   }
 
   return (
@@ -168,14 +194,11 @@ function App() {
 
           {isEducationsExpanded && isEditingEdu && (
             <EducationForm
-              education={
-                editingEduID !== null
-                  ? educations.find((edu) => edu.id === editingEduID)
-                  : null
-              }
+              formInfo={eduFormInfo}
               onCancel={handleEducationCancelEdit}
               onSubmit={handleEducationEdit}
               onDelete={handleEducationDelete}
+              onChange={handleEducationFormChange}
             ></EducationForm>
           )}
 
@@ -193,6 +216,13 @@ function App() {
               onClick={() => {
                 setIsEditingEdu(true);
                 setEditingEduID(null);
+                setEduFormInfo({
+                  university: '',
+                  field: '',
+                  city: '',
+                  startDate: '',
+                  endDate: '',
+                });
               }}
               className="add-edu"
             >
@@ -212,14 +242,11 @@ function App() {
 
           {isJobsExpanded && isEditingJob && (
             <JobForm
-              job={
-                editingJobID !== null
-                  ? jobs.find((job) => job.id === editingJobID)
-                  : null
-              }
+              formInfo={jobFormInfo}
               onCancel={handleJobCancelEdit}
               onSubmit={handleJobEdit}
               onDelete={handleJobDelete}
+              onChange={handleJobFormChange}
             ></JobForm>
           )}
 
@@ -237,6 +264,14 @@ function App() {
               onClick={() => {
                 setIsEditingJob(true);
                 setEditingJobID(null);
+                setJobFormInfo({
+                  company: '',
+                  role: '',
+                  location: '',
+                  description: '',
+                  startDate: '',
+                  endDate: '',
+                });
               }}
               className="add-job"
             >
