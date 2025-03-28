@@ -87,7 +87,6 @@ button.add-job {
   }
   aside {
     align-self: stretch;
-    /* margin-left: auto; */
     padding: 2em;
   }
 }

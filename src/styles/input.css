@@ -22,3 +22,14 @@ label input:focus {
   border: none;
   outline: 2px solid rgb(18, 77, 144);
 }
+
+@media screen and (600px< width < 1200px) {
+  label input {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+
+  label {
+    font-size: 0.9rem;
+  }
+}
