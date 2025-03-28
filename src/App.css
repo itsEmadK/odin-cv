@@ -58,12 +58,14 @@ aside form {
   transform: rotate(180deg);
 }
 
-section.educations {
+section.educations,
+section.experience {
   text-align: center;
   margin-bottom: 1em;
 }
 
-button.add-edu {
+button.add-edu,
+button.add-job {
   appearance: none;
   background-color: white;
   padding: 8px 12px;

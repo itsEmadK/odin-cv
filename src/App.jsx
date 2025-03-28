@@ -6,6 +6,7 @@ import PersonalDetailsForm from './components/PersonalDetailsForm.jsx';
 import EducationList from './components/Educations.jsx';
 import JobsList from './components/Jobs.jsx';
 import EducationForm from './components/EducationForm.jsx';
+import JobForm from './components/JobForm.jsx';
 
 function App() {
   const [person, setPerson] = useState(personData);
@@ -19,6 +20,9 @@ function App() {
 
   const [isEditingEdu, setIsEditingEdu] = useState(false);
   const [editingEduID, setEditingEduID] = useState(null);
+
+  const [isEditingJob, setIsEditingJob] = useState(false);
+  const [editingJobID, setEditingJobID] = useState(null);
 
   function handlePersonInfoChange(newPerson) {
     setPerson(newPerson);
@@ -105,6 +109,45 @@ function App() {
     setIsJobsExpanded(!isJobsExpanded);
   }
 
+  function handleJobClick(id) {
+    setIsEditingJob(true);
+    setEditingJobID(id);
+  }
+
+  function handleJobEdit(newJobInfo) {
+    let newJobs = jobs;
+    if (editingJobID !== null) {
+      const oldJob = jobs.find((job) => job.id === editingJobID);
+      newJobs = newJobs.filter((job) => job.id !== oldJob.id);
+      newJobs = [...newJobs, { id: oldJob.id, ...newJobInfo }];
+    } else {
+      const newID =
+        jobs.slice().sort((a, b) => (a.id < b.id ? -1 : 1))[
+          jobs.length - 1
+        ].id + 1;
+
+      newJobs = [...newJobs, { id: newID, ...newJobInfo }];
+    }
+
+    setPerson({ ...person, jobs: newJobs });
+    setEditingJobID(null);
+    setIsEditingJob(false);
+  }
+
+  function handleJobDelete() {
+    setPerson({
+      ...person,
+      jobs: person.jobs.filter((job) => job.id !== editingJobID),
+    });
+    setEditingJobID(null);
+    setIsEditingJob(false);
+  }
+
+  function handleJobCancelEdit() {
+    setEditingJobID(null);
+    setIsEditingJob(false);
+  }
+
   return (
     <main>
       <aside>
@@ -166,15 +209,39 @@ function App() {
               className={isJobsExpanded ? 'collapse' : 'expand'}
             ></button>
           </div>
-          {isJobsExpanded && (
+
+          {isJobsExpanded && isEditingJob && (
+            <JobForm
+              job={
+                editingJobID !== null
+                  ? jobs.find((job) => job.id === editingJobID)
+                  : null
+              }
+              onCancel={handleJobCancelEdit}
+              onSubmit={handleJobEdit}
+              onDelete={handleJobDelete}
+            ></JobForm>
+          )}
+
+          {isJobsExpanded && !isEditingJob && (
             <JobsList
               jobs={jobs}
               hiddenJobIDs={hiddenJobIDs}
               onItemVisibilityToggle={handleJobVisibilityToggle}
-              onItemClick={(id) => {
-                console.log(id);
-              }}
+              onItemClick={handleJobClick}
             ></JobsList>
+          )}
+
+          {!isEditingJob && (
+            <button
+              onClick={() => {
+                setIsEditingJob(true);
+                setEditingJobID(null);
+              }}
+              className="add-job"
+            >
+              + Experience
+            </button>
           )}
         </section>
       </aside>
