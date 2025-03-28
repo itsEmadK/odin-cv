@@ -86,3 +86,8 @@ ul {
   max-width: 42ch;
   grid-column-start: 2;
 }
+
+.job-item .location,
+.education-item .city {
+  max-width: 150px;
+}
