@@ -6,3 +6,12 @@
 :root {
   font-family: sans-serif;
 }
+
+div#root {
+  display: flex;
+  justify-content: center;
+}
+
+div#root > * {
+  flex: 1;
+}

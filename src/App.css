@@ -7,6 +7,7 @@ main {
   gap: 1.5em;
   padding: 2em;
   justify-content: center;
+  max-width: 1920px;
 }
 
 main .resume {
@@ -20,6 +21,7 @@ aside {
   justify-content: end;
   flex: 1;
   gap: 1.5em;
+  max-width: 500px;
 }
 
 aside form {
@@ -74,4 +76,18 @@ button.add-job {
   font-weight: bold;
   cursor: pointer;
   margin-top: 1em;
+}
+
+@media screen and (width<600px) {
+  main {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 0;
+  }
+  aside {
+    align-self: stretch;
+    /* margin-left: auto; */
+    padding: 2em;
+  }
 }
