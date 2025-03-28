@@ -82,7 +82,7 @@ export default function EducationSection({
 
   function handleEducationEdit() {
     if (editingEduID !== null) {
-      onEducationEdited({ editingEduID, ...eduFormInfo });
+      onEducationEdited({ ...eduFormInfo, id: editingEduID });
     } else {
       onEducationAdded({ ...eduFormInfo });
     }
