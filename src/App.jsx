@@ -7,26 +7,16 @@ import EducationList from './components/Educations.jsx';
 import JobsList from './components/Jobs.jsx';
 import EducationForm from './components/EducationForm.jsx';
 import JobForm from './components/JobForm.jsx';
+import EducationSection from './components/Educations.jsx';
 
 function App() {
   const [person, setPerson] = useState(personData);
   const educations = person.educations;
   const [hiddenEducationIDs, setHiddenEducationIDs] = useState([]);
-  const [isEducationsExpanded, setIsEducationsExpanded] = useState(true);
 
   const jobs = person.jobs;
   const [hiddenJobIDs, setHiddenJobIDs] = useState([]);
   const [isJobsExpanded, setIsJobsExpanded] = useState(true);
-
-  const [isEditingEdu, setIsEditingEdu] = useState(false);
-  const [editingEduID, setEditingEduID] = useState(null);
-  const [eduFormInfo, setEduFormInfo] = useState({
-    university: '',
-    field: '',
-    city: '',
-    startDate: '',
-    endDate: '',
-  });
 
   const [isEditingJob, setIsEditingJob] = useState(false);
   const [editingJobID, setEditingJobID] = useState(null);
@@ -63,64 +53,36 @@ function App() {
     }
   }
 
-  function handleEducationsExpand() {
-    setIsEducationsExpanded(!isEducationsExpanded);
-  }
-
-  function handleEducationClick(id) {
-    setIsEditingEdu(true);
-    setEditingEduID(id);
-    setEduFormInfo({
-      ...educations.find((edu) => edu.id === id),
-      id: undefined,
-    });
-  }
-
-  function handleEducationEdit() {
+  function handleEducationEdit(educationInfo) {
     let newEducations = educations;
-    if (editingEduID !== null) {
-      const oldEducation = educations.find(
-        (edu) => edu.id === editingEduID
-      );
-      newEducations = newEducations.filter(
-        (edu) => edu.id !== oldEducation.id
-      );
-      newEducations = [
-        ...newEducations,
-        { id: oldEducation.id, ...eduFormInfo },
-      ];
-    } else {
-      const newID =
-        educations.slice().sort((a, b) => (a.id < b.id ? -1 : 1))[
-          educations.length - 1
-        ].id + 1;
-
-      newEducations = [...newEducations, { id: newID, ...eduFormInfo }];
-    }
-
+    const oldEducation = educations.find(
+      (edu) => edu.id === educationInfo.id
+    );
+    newEducations = newEducations.filter(
+      (edu) => edu.id !== oldEducation.id
+    );
+    newEducations = [
+      ...newEducations,
+      { id: oldEducation.id, ...educationInfo },
+    ];
     setPerson({ ...person, educations: newEducations });
-    setEditingEduID(null);
-    setIsEditingEdu(false);
   }
 
-  function handleEducationDelete() {
+  function handleEducationAdd(educationInfo) {
+    let newEducations = educations;
+    const newID =
+      educations.slice().sort((a, b) => (a.id < b.id ? -1 : 1))[
+        educations.length - 1
+      ].id + 1;
+    newEducations = [...newEducations, { id: newID, ...educationInfo }];
+    setPerson({ ...person, educations: newEducations });
+  }
+
+  function handleEducationDelete(id) {
     setPerson({
       ...person,
-      educations: person.educations.filter(
-        (edu) => edu.id !== editingEduID
-      ),
+      educations: person.educations.filter((edu) => edu.id !== id),
     });
-    setEditingEduID(null);
-    setIsEditingEdu(false);
-  }
-
-  function handleEducationCancelEdit() {
-    setEditingEduID(null);
-    setIsEditingEdu(false);
-  }
-
-  function handleEducationFormChange(formInfo) {
-    setEduFormInfo({ ...formInfo });
   }
 
   function handleJobsExpand() {
@@ -181,58 +143,16 @@ function App() {
           person={person}
           onChange={handlePersonInfoChange}
         ></PersonalDetailsForm>
-        <section className="educations">
-          <div
-            className={`educations-header ${isEducationsExpanded && 'expanded'}`}
-          >
-            <h2>Educations</h2>
-            <button
-              onClick={handleEducationsExpand}
-              className={isEducationsExpanded ? 'collapse' : 'expand'}
-            ></button>
-          </div>
-
-          {isEducationsExpanded && isEditingEdu && (
-            <EducationForm
-              formInfo={eduFormInfo}
-              onCancel={handleEducationCancelEdit}
-              onSubmit={handleEducationEdit}
-              onDelete={handleEducationDelete}
-              onChange={handleEducationFormChange}
-            ></EducationForm>
-          )}
-
-          {isEducationsExpanded && !isEditingEdu && (
-            <EducationList
-              educations={educations
-                .slice()
-                .sort((a, b) => (a.startDate < b.startDate ? -1 : 1))}
-              hiddenEducationIDs={hiddenEducationIDs}
-              onItemVisibilityToggle={handleEducationVisibilityToggle}
-              onItemClick={handleEducationClick}
-            ></EducationList>
-          )}
-
-          {!isEditingEdu && (
-            <button
-              onClick={() => {
-                setIsEditingEdu(true);
-                setEditingEduID(null);
-                setEduFormInfo({
-                  university: '',
-                  field: '',
-                  city: '',
-                  startDate: '',
-                  endDate: '',
-                });
-                setIsEducationsExpanded(true);
-              }}
-              className="add-edu"
-            >
-              + Education
-            </button>
-          )}
-        </section>
+        <EducationSection
+          educations={educations}
+          onEducationAdded={handleEducationAdd}
+          onEducationDeleted={handleEducationDelete}
+          onEducationItemVisibilityToggled={
+            handleEducationVisibilityToggle
+          }
+          onEducationEdited={handleEducationEdit}
+          hiddenEducationIDs={hiddenEducationIDs}
+        ></EducationSection>
 
         <section className="experience">
           <div className={`jobs-header ${isJobsExpanded && 'expanded'}`}>
