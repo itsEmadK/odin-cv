@@ -1,11 +1,22 @@
 import '../styles/input.css';
 
-export default function Input({ value, onChange, label, required }) {
+export default function Input({
+  value,
+  onChange,
+  label,
+  required,
+  type = 'text',
+}) {
   return (
     <label>
       {label}
       {required && '*'}
-      <input type="text" value={value} onChange={onChange} required={required} />
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        required={required}
+      />
     </label>
   );
 }
