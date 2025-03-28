@@ -3,31 +3,17 @@ import Resume from './components/Resume';
 import { person as personData } from './person.js';
 import { useState } from 'react';
 import PersonalDetailsForm from './components/PersonalDetailsForm.jsx';
-import EducationList from './components/Educations.jsx';
-import JobsList from './components/Jobs.jsx';
-import EducationForm from './components/EducationForm.jsx';
-import JobForm from './components/JobForm.jsx';
 import EducationSection from './components/Educations.jsx';
+import JobSection from './components/Jobs.jsx';
 
 function App() {
   const [person, setPerson] = useState(personData);
+
   const educations = person.educations;
   const [hiddenEducationIDs, setHiddenEducationIDs] = useState([]);
 
   const jobs = person.jobs;
   const [hiddenJobIDs, setHiddenJobIDs] = useState([]);
-  const [isJobsExpanded, setIsJobsExpanded] = useState(true);
-
-  const [isEditingJob, setIsEditingJob] = useState(false);
-  const [editingJobID, setEditingJobID] = useState(null);
-  const [jobFormInfo, setJobFormInfo] = useState({
-    company: '',
-    role: '',
-    location: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-  });
 
   function handlePersonInfoChange(newPerson) {
     setPerson(newPerson);
@@ -42,17 +28,6 @@ function App() {
       setHiddenEducationIDs([...hiddenEducationIDs, id]);
     }
   }
-
-  function handleJobVisibilityToggle(id) {
-    if (hiddenJobIDs.includes(id)) {
-      console.log(hiddenJobIDs.filter((jobID) => jobID !== id));
-      setHiddenJobIDs(hiddenJobIDs.filter((jobID) => jobID !== id));
-    } else {
-      console.log([...hiddenJobIDs, id]);
-      setHiddenJobIDs([...hiddenJobIDs, id]);
-    }
-  }
-
   function handleEducationEdit(educationInfo) {
     let newEducations = educations;
     const oldEducation = educations.find(
@@ -67,7 +42,6 @@ function App() {
     ];
     setPerson({ ...person, educations: newEducations });
   }
-
   function handleEducationAdd(educationInfo) {
     let newEducations = educations;
     const newID =
@@ -77,7 +51,6 @@ function App() {
     newEducations = [...newEducations, { id: newID, ...educationInfo }];
     setPerson({ ...person, educations: newEducations });
   }
-
   function handleEducationDelete(id) {
     setPerson({
       ...person,
@@ -85,55 +58,35 @@ function App() {
     });
   }
 
-  function handleJobsExpand() {
-    setIsJobsExpanded(!isJobsExpanded);
-  }
-
-  function handleJobClick(id) {
-    setIsEditingJob(true);
-    setEditingJobID(id);
-    setJobFormInfo({
-      ...jobs.find((job) => job.id === id),
-      id: undefined,
-    });
-  }
-
-  function handleJobEdit() {
-    let newJobs = jobs;
-    if (editingJobID !== null) {
-      const oldJob = jobs.find((job) => job.id === editingJobID);
-      newJobs = newJobs.filter((job) => job.id !== oldJob.id);
-      newJobs = [...newJobs, { id: oldJob.id, ...jobFormInfo }];
+  function handleJobVisibilityToggle(id) {
+    if (hiddenJobIDs.includes(id)) {
+      console.log(hiddenJobIDs.filter((jobID) => jobID !== id));
+      setHiddenJobIDs(hiddenJobIDs.filter((jobID) => jobID !== id));
     } else {
-      const newID =
-        jobs.slice().sort((a, b) => (a.id < b.id ? -1 : 1))[
-          jobs.length - 1
-        ].id + 1;
-
-      newJobs = [...newJobs, { id: newID, ...jobFormInfo }];
+      console.log([...hiddenJobIDs, id]);
+      setHiddenJobIDs([...hiddenJobIDs, id]);
     }
-
-    setPerson({ ...person, jobs: newJobs });
-    setEditingJobID(null);
-    setIsEditingJob(false);
   }
-
-  function handleJobDelete() {
+  function handleJobAdd(jobInfo) {
+    let newJobs = jobs;
+    const newID =
+      jobs.slice().sort((a, b) => (a.id < b.id ? -1 : 1))[jobs.length - 1]
+        .id + 1;
+    newJobs = [...newJobs, { id: newID, ...jobInfo }];
+    setPerson({ ...person, jobs: newJobs });
+  }
+  function handleJobEdit(jobInfo) {
+    let newJobs = jobs;
+    const oldJob = jobs.find((job) => job.id === jobInfo.id);
+    newJobs = newJobs.filter((job) => job.id !== oldJob.id);
+    newJobs = [...newJobs, { id: oldJob.id, ...jobInfo }];
+    setPerson({ ...person, jobs: newJobs });
+  }
+  function handleJobDelete(id) {
     setPerson({
       ...person,
-      jobs: person.jobs.filter((job) => job.id !== editingJobID),
+      jobs: person.jobs.filter((job) => job.id !== id),
     });
-    setEditingJobID(null);
-    setIsEditingJob(false);
-  }
-
-  function handleJobCancelEdit() {
-    setEditingJobID(null);
-    setIsEditingJob(false);
-  }
-
-  function handleJobFormChange(formInfo) {
-    setJobFormInfo({ ...formInfo });
   }
 
   return (
@@ -154,57 +107,14 @@ function App() {
           hiddenEducationIDs={hiddenEducationIDs}
         ></EducationSection>
 
-        <section className="experience">
-          <div className={`jobs-header ${isJobsExpanded && 'expanded'}`}>
-            <h2>Experience</h2>
-            <button
-              onClick={handleJobsExpand}
-              className={isJobsExpanded ? 'collapse' : 'expand'}
-            ></button>
-          </div>
-
-          {isJobsExpanded && isEditingJob && (
-            <JobForm
-              formInfo={jobFormInfo}
-              onCancel={handleJobCancelEdit}
-              onSubmit={handleJobEdit}
-              onDelete={handleJobDelete}
-              onChange={handleJobFormChange}
-            ></JobForm>
-          )}
-
-          {isJobsExpanded && !isEditingJob && (
-            <JobsList
-              jobs={jobs
-                .slice()
-                .sort((a, b) => (a.startDate < b.startDate ? -1 : 1))}
-              hiddenJobIDs={hiddenJobIDs}
-              onItemVisibilityToggle={handleJobVisibilityToggle}
-              onItemClick={handleJobClick}
-            ></JobsList>
-          )}
-
-          {!isEditingJob && (
-            <button
-              onClick={() => {
-                setIsEditingJob(true);
-                setEditingJobID(null);
-                setIsJobsExpanded(true);
-                setJobFormInfo({
-                  company: '',
-                  role: '',
-                  location: '',
-                  description: '',
-                  startDate: '',
-                  endDate: '',
-                });
-              }}
-              className="add-job"
-            >
-              + Experience
-            </button>
-          )}
-        </section>
+        <JobSection
+          jobs={jobs}
+          onJobAdded={handleJobAdd}
+          onJobDeleted={handleJobDelete}
+          onJobEdited={handleJobEdit}
+          onJobItemVisibilityToggled={handleJobVisibilityToggle}
+          hiddenJobIDs={hiddenJobIDs}
+        ></JobSection>
       </aside>
 
       <Resume
