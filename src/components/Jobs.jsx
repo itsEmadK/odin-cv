@@ -21,7 +21,7 @@ function JobItem({ company, isShowing, onVisibilityToggle, onClick }) {
 
 export default function JobsList({ jobs, hiddenJobIDs, onItemVisibilityToggle, onItemClick }) {
   return (
-    <ul className="educations">
+    <ul className="jobs">
       {jobs.map((job) => (
         <JobItem
           key={job.id}
