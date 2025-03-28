@@ -204,7 +204,9 @@ function App() {
 
           {isEducationsExpanded && !isEditingEdu && (
             <EducationList
-              educations={educations}
+              educations={educations
+                .slice()
+                .sort((a, b) => (a.startDate < b.startDate ? -1 : 1))}
               hiddenEducationIDs={hiddenEducationIDs}
               onItemVisibilityToggle={handleEducationVisibilityToggle}
               onItemClick={handleEducationClick}
@@ -253,7 +255,9 @@ function App() {
 
           {isJobsExpanded && !isEditingJob && (
             <JobsList
-              jobs={jobs}
+              jobs={jobs
+                .slice()
+                .sort((a, b) => (a.startDate < b.startDate ? -1 : 1))}
               hiddenJobIDs={hiddenJobIDs}
               onItemVisibilityToggle={handleJobVisibilityToggle}
               onItemClick={handleJobClick}
@@ -286,12 +290,16 @@ function App() {
       <Resume
         person={{
           ...person,
-          educations: person.educations.filter(
-            (education) => !hiddenEducationIDs.includes(education.id)
-          ),
-          jobs: person.jobs.filter(
-            (job) => !hiddenJobIDs.includes(job.id)
-          ),
+          educations: person.educations
+            .filter(
+              (education) => !hiddenEducationIDs.includes(education.id)
+            )
+            .slice()
+            .sort((a, b) => (a.startDate < b.startDate ? -1 : 1)),
+          jobs: person.jobs
+            .filter((job) => !hiddenJobIDs.includes(job.id))
+            .slice()
+            .sort((a, b) => (a.startDate < b.startDate ? -1 : 1)),
         }}
       ></Resume>
     </main>
