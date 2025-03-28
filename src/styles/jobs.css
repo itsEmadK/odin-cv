@@ -4,10 +4,13 @@ ul.jobs {
   gap: 0.5em;
 }
 
-.job-item {
+section.experience .job-item {
   background-color: white;
   /* margin: 12px 0px; */
   padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
 .job-item button {
