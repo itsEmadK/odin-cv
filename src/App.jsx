@@ -223,6 +223,7 @@ function App() {
                   startDate: '',
                   endDate: '',
                 });
+                setIsEducationsExpanded(true);
               }}
               className="add-edu"
             >
@@ -264,6 +265,7 @@ function App() {
               onClick={() => {
                 setIsEditingJob(true);
                 setEditingJobID(null);
+                setIsJobsExpanded(true);
                 setJobFormInfo({
                   company: '',
                   role: '',
