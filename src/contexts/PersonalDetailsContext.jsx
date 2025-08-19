@@ -7,7 +7,7 @@ const PersonalDetailsApiContext = createContext();
 const initialState = {
   name: sample.name,
   address: sample.address,
-  phone: sample.address,
+  phone: sample.phone,
   email: sample.email,
 };
 
@@ -37,7 +37,9 @@ export default function PersonalDetailsProvider({ children }) {
   }, []);
   return (
     <PersonalDetailsContext.Provider value={state}>
-      <PersonalDetailsApiContext value={api}>{children}</PersonalDetailsApiContext>
+      <PersonalDetailsApiContext.Provider value={api}>
+        {children}
+      </PersonalDetailsApiContext.Provider>
     </PersonalDetailsContext.Provider>
   );
 }
