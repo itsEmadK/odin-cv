@@ -6,11 +6,12 @@ const JobsApiContext = createContext();
 
 const initialJobs = sample.jobs;
 
-export const useJobs = () => useContext(JobsContext);
+export const useJobs = () => useContext(JobsContext).jobs;
+export const useHiddenJobIds = () => useContext(JobsContext).hiddenJobIds;
 export const useJobsApi = () => useContext(JobsApiContext);
 
 export default function JobsProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, initialJobs);
+  const [state, dispatch] = useReducer(reducer, { jobs: initialJobs, hiddenJobIds: [] });
   const api = useMemo(() => {
     return {
       addJob: (job) => {
@@ -30,6 +31,9 @@ export default function JobsProvider({ children }) {
       },
       loadDefaults: () => {
         dispatch({ type: 'loadDefault' });
+      },
+      toggleJobVisibility: (id) => {
+        dispatch({ type: 'toggleJobVisibility', id });
       },
     };
   }, []);
@@ -67,6 +71,14 @@ function reducer(state, action) {
     }
     case 'loadDefaults': {
       return { ...state, jobs: initialJobs };
+    }
+    case 'toggleJobVisibility': {
+      return {
+        ...state,
+        hiddenJobIds: state.hiddenJobIds.includes(action.id)
+          ? state.hiddenJobIds.filter((j) => j.id !== action.id)
+          : [...state.hiddenJobIds, action.id],
+      };
     }
 
     default: {

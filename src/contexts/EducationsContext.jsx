@@ -6,11 +6,15 @@ const EducationsApiContext = createContext();
 
 const initialEducations = sample.educations;
 
-export const useEducations = () => useContext(EducationsContext);
+export const useEducations = () => useContext(EducationsContext).educations;
+export const useHiddenEducationIds = () => useContext(EducationsContext).hiddenEducationIds;
 export const useEducationsApi = () => useContext(EducationsApiContext);
 
 export default function EducationsProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, initialEducations);
+  const [state, dispatch] = useReducer(reducer, {
+    educations: initialEducations,
+    hiddenEducationIds: [],
+  });
   const api = useMemo(() => {
     return {
       addEducation: (education) => {
@@ -31,6 +35,9 @@ export default function EducationsProvider({ children }) {
       loadDefaults: () => {
         dispatch({ type: 'loadDefault' });
       },
+      toggleEducationVisibility:()=>{
+        dispatch({type:'toggleEducationVisibility'})
+      }
     };
   }, []);
 
@@ -70,6 +77,15 @@ function reducer(state, action) {
     }
     case 'loadDefaults': {
       return { ...state, educations: initialEducations };
+    }
+
+    case 'toggleEducationVisibility': {
+      return {
+        ...state,
+        hiddenJobIds: state.hiddenEducationIds.includes(action.id)
+          ? state.hiddenEducationIds.filter((e) => e.id !== action.id)
+          : [...state.hiddenEducationIds, action.id],
+      };
     }
 
     default: {
