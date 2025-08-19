@@ -1,5 +1,5 @@
-import { useEducations } from '../contexts/EducationsContext';
-import { useJobs } from '../contexts/JobsContext';
+import { useEducations, useHiddenEducationIds } from '../contexts/EducationsContext';
+import { useHiddenJobIds, useJobs } from '../contexts/JobsContext';
 import { usePersonalDetails } from '../contexts/PersonalDetailsContext';
 import '../styles/resume.css';
 
@@ -87,6 +87,12 @@ export default function Resume({ headerPosition }) {
   const personalDetails = usePersonalDetails();
   const educations = useEducations();
   const jobs = useJobs();
+  const hiddenJobIds = useHiddenJobIds();
+  const hiddenEducationIds = useHiddenEducationIds();
+
+  const visibleEducations = educations.filter((e) => !hiddenEducationIds.includes(e.id));
+  const visibleJobs = jobs.filter((j) => !hiddenJobIds.includes(j.id));
+
   if (headerPosition === 'top') {
     headerPosClassName = 'header-on-top';
   } else if (headerPosition === 'left') {
@@ -102,8 +108,8 @@ export default function Resume({ headerPosition }) {
         email={personalDetails.email}
         phone={personalDetails.phone}
         address={personalDetails.address}
-      ></ResumeHeader>
-      <ResumeBody educations={educations} jobs={jobs}></ResumeBody>
+      />
+      <ResumeBody educations={visibleEducations} jobs={visibleJobs} />
     </div>
   );
 }

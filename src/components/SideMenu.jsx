@@ -1,18 +1,32 @@
+import { useEducationsApi } from '../contexts/EducationsContext';
+import { useJobsApi } from '../contexts/JobsContext';
+import { usePersonalDetailsApi } from '../contexts/PersonalDetailsContext';
 import '../styles/side-menu.css';
 
-export default function SideMenu({
-  preferredHeaderPosition = 'top',
-  onClearClicked,
-  onLoadSampleClicked,
-  onPreferredHeaderPosChanged,
-}) {
+export default function SideMenu({ preferredHeaderPosition = 'top', onPreferredHeaderPosChanged }) {
+  const personalDetailsApi = usePersonalDetailsApi();
+  const educationsApi = useEducationsApi();
+  const jobsApi = useJobsApi();
+
+  const handleClearResume = () => {
+    personalDetailsApi.clear();
+    jobsApi.clear();
+    educationsApi.clear();
+  };
+
+  const handleLoadDefaults = () => {
+    personalDetailsApi.loadDefaults();
+    jobsApi.loadDefaults();
+    educationsApi.loadDefaults();
+  };
+
   return (
     <div className="side-menu">
       <div className="buttons-container">
-        <button onClick={onClearClicked} className="clear">
+        <button onClick={handleClearResume} className="clear">
           Clear
         </button>
-        <button onClick={onLoadSampleClicked} className="load">
+        <button onClick={handleLoadDefaults} className="load">
           Load Sample
         </button>
       </div>

@@ -3,6 +3,7 @@ import eyeIcon from '../assets/eye-outline.svg';
 import eyeOffIcon from '../assets/eye-off-outline.svg';
 import JobForm from './JobForm';
 import { useState } from 'react';
+import { useHiddenJobIds, useJobs, useJobsApi } from '../contexts/JobsContext';
 
 function JobItem({ company, isShowing, onVisibilityToggle, onClick }) {
   return (
@@ -21,12 +22,7 @@ function JobItem({ company, isShowing, onVisibilityToggle, onClick }) {
   );
 }
 
-function JobsList({
-  jobs,
-  hiddenJobIDs,
-  onItemVisibilityToggle,
-  onItemClick,
-}) {
+function JobsList({ jobs, hiddenJobIDs, onItemVisibilityToggle, onItemClick }) {
   return (
     <ul className="jobs">
       {jobs.map((job) => (
@@ -42,14 +38,11 @@ function JobsList({
   );
 }
 
-export default function JobSection({
-  jobs,
-  onJobAdded,
-  onJobEdited,
-  onJobDeleted,
-  onJobItemVisibilityToggled,
-  hiddenJobIDs,
-}) {
+export default function JobSection() {
+  const jobs = useJobs();
+  const hiddenJobIds = useHiddenJobIds();
+  const jobsApi = useJobsApi();
+
   const [isJobsExpanded, setIsJobsExpanded] = useState(true);
   const [isEditingJob, setIsEditingJob] = useState(false);
   const [editingJobID, setEditingJobID] = useState(null);
@@ -77,9 +70,9 @@ export default function JobSection({
 
   function handleJobEdit() {
     if (editingJobID !== null) {
-      onJobEdited({ ...jobFormInfo, id: editingJobID });
+      jobsApi.updateJob({ ...jobFormInfo, id: editingJobID });
     } else {
-      onJobAdded({ ...jobFormInfo });
+      jobsApi.addJob({ ...jobFormInfo });
     }
 
     setEditingJobID(null);
@@ -87,7 +80,7 @@ export default function JobSection({
   }
 
   function handleJobDelete() {
-    onJobDeleted(editingJobID);
+    jobsApi.removeJob(editingJobID);
     setEditingJobID(null);
     setIsEditingJob(false);
   }
@@ -99,6 +92,10 @@ export default function JobSection({
 
   function handleJobFormChange(formInfo) {
     setJobFormInfo({ ...formInfo });
+  }
+
+  function handleJobVisibilityToggle(id) {
+    jobsApi.toggleJobVisibility(id);
   }
 
   return (
@@ -123,11 +120,9 @@ export default function JobSection({
 
       {isJobsExpanded && !isEditingJob && (
         <JobsList
-          jobs={jobs
-            .slice()
-            .sort((a, b) => (a.startDate < b.startDate ? -1 : 1))}
-          hiddenJobIDs={hiddenJobIDs}
-          onItemVisibilityToggle={onJobItemVisibilityToggled}
+          jobs={jobs.slice().sort((a, b) => (a.startDate < b.startDate ? -1 : 1))}
+          hiddenJobIDs={hiddenJobIds}
+          onItemVisibilityToggle={handleJobVisibilityToggle}
           onItemClick={handleJobClick}
         ></JobsList>
       )}

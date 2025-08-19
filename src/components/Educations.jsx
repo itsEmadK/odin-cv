@@ -3,13 +3,13 @@ import { useState } from 'react';
 import eyeIcon from '../assets/eye-outline.svg';
 import eyeOffIcon from '../assets/eye-off-outline.svg';
 import EducationForm from './EducationForm';
+import {
+  useEducations,
+  useEducationsApi,
+  useHiddenEducationIds,
+} from '../contexts/EducationsContext';
 
-function EducationItem({
-  university,
-  isShowing,
-  onVisibilityToggle,
-  onClick,
-}) {
+function EducationItem({ university, isShowing, onVisibilityToggle, onClick }) {
   return (
     <li onClick={onClick} className="education-item">
       <h3>{university}</h3>
@@ -26,12 +26,7 @@ function EducationItem({
   );
 }
 
-function EducationList({
-  educations,
-  hiddenEducationIDs,
-  onItemVisibilityToggle,
-  onItemClick,
-}) {
+function EducationList({ educations, hiddenEducationIDs, onItemVisibilityToggle, onItemClick }) {
   return (
     <ul className="educations">
       {educations.map((education) => (
@@ -47,16 +42,12 @@ function EducationList({
   );
 }
 
-export default function EducationSection({
-  educations,
-  onEducationAdded,
-  onEducationEdited,
-  onEducationDeleted,
-  onEducationItemVisibilityToggled,
-  hiddenEducationIDs,
-}) {
-  const [isEducationsExpanded, setIsEducationsExpanded] = useState(true);
+export default function EducationSection() {
+  const educations = useEducations();
+  const educationsApi = useEducationsApi();
+  const hiddenEducationIds = useHiddenEducationIds();
 
+  const [isEducationsExpanded, setIsEducationsExpanded] = useState(true);
   const [isEditingEdu, setIsEditingEdu] = useState(false);
   const [editingEduID, setEditingEduID] = useState(null);
   const [eduFormInfo, setEduFormInfo] = useState({
@@ -82,9 +73,9 @@ export default function EducationSection({
 
   function handleEducationEdit() {
     if (editingEduID !== null) {
-      onEducationEdited({ ...eduFormInfo, id: editingEduID });
+      educationsApi.updateEducation({ ...eduFormInfo, id: editingEduID });
     } else {
-      onEducationAdded({ ...eduFormInfo });
+      educationsApi.addEducation({ ...eduFormInfo });
     }
 
     setEditingEduID(null);
@@ -92,7 +83,7 @@ export default function EducationSection({
   }
 
   function handleEducationDelete() {
-    onEducationDeleted(editingEduID);
+    educationsApi.removeEducation(editingEduID);
     setEditingEduID(null);
     setIsEditingEdu(false);
   }
@@ -105,11 +96,14 @@ export default function EducationSection({
   function handleEducationFormChange(formInfo) {
     setEduFormInfo({ ...formInfo });
   }
+
+  function handleEducationVisibilityToggle(id) {
+    educationsApi.toggleEducationVisibility(id);
+  }
+
   return (
     <section className="educations">
-      <div
-        className={`educations-header ${isEducationsExpanded && 'expanded'}`}
-      >
+      <div className={`educations-header ${isEducationsExpanded && 'expanded'}`}>
         <h2>Educations</h2>
         <button
           onClick={handleEducationsExpand}
@@ -129,11 +123,9 @@ export default function EducationSection({
 
       {isEducationsExpanded && !isEditingEdu && (
         <EducationList
-          educations={educations
-            .slice()
-            .sort((a, b) => (a.startDate < b.startDate ? -1 : 1))}
-          hiddenEducationIDs={hiddenEducationIDs}
-          onItemVisibilityToggle={onEducationItemVisibilityToggled}
+          educations={educations.slice().sort((a, b) => (a.startDate < b.startDate ? -1 : 1))}
+          hiddenEducationIDs={hiddenEducationIds}
+          onItemVisibilityToggle={handleEducationVisibilityToggle}
           onItemClick={handleEducationClick}
         ></EducationList>
       )}
