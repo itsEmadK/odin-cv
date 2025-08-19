@@ -57,7 +57,7 @@ function reducer(state, action) {
       return {
         ...state,
         educations: [
-          ...state.educations.filter((e) => e.id !== action.education.id),
+          ...state.educations.map((e) => (e.id === action.education.id ? action.education : e)),
           action.education,
         ],
       };

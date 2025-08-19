@@ -56,7 +56,7 @@ function reducer(state, action) {
     case 'updateJob': {
       return {
         ...state,
-        jobs: [...state.jobs.filter((j) => j.id !== action.job.id), action.job],
+        ...state.jobs.map((j) => (j.id === action.job.id ? action.job : j)),
       };
     }
     case 'clear': {
