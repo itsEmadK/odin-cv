@@ -1,43 +1,47 @@
+import { usePersonalDetails, usePersonalDetailsApi } from '../contexts/PersonalDetailsContext';
 import '../styles/form.css';
 import Input from './Input';
 
-export default function PersonalDetailsForm({ person, onChange }) {
+export default function PersonalDetailsForm() {
+  const personalDetails = usePersonalDetails();
+  const api = usePersonalDetailsApi();
+
   function handleNameChange(e) {
-    onChange({ ...person, name: e.target.value });
+    api.updateName(e.target.value);
   }
   function handleEmailChange(e) {
-    onChange({ ...person, email: e.target.value });
+    api.updateEmail(e.target.value);
   }
   function handlePhoneChange(e) {
-    onChange({ ...person, phone: e.target.value });
+    api.updatePhone(e.target.value);
   }
   function handleAddressChange(e) {
-    onChange({ ...person, address: e.target.value });
+    api.updateAddress(e.target.value);
   }
   return (
     <form>
       <h2> Personal Details</h2>
       <Input
         label={'Full name'}
-        value={person.name}
+        value={personalDetails.name}
         onChange={handleNameChange}
         required={true}
       ></Input>
       <Input
         label={'Email'}
-        value={person.email}
+        value={personalDetails.email}
         onChange={handleEmailChange}
         required={false}
       ></Input>
       <Input
         label={'Phone Number'}
-        value={person.phone}
+        value={personalDetails.phone}
         onChange={handlePhoneChange}
         required={false}
       ></Input>
       <Input
         label={'Address'}
-        value={person.address}
+        value={personalDetails.address}
         onChange={handleAddressChange}
         required={false}
       ></Input>

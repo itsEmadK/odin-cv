@@ -35,9 +35,9 @@ export default function EducationsProvider({ children }) {
       loadDefaults: () => {
         dispatch({ type: 'loadDefault' });
       },
-      toggleEducationVisibility:()=>{
-        dispatch({type:'toggleEducationVisibility'})
-      }
+      toggleEducationVisibility: () => {
+        dispatch({ type: 'toggleEducationVisibility' });
+      },
     };
   }, []);
 
@@ -65,7 +65,6 @@ function reducer(state, action) {
         ...state,
         educations: [
           ...state.educations.map((e) => (e.id === action.education.id ? action.education : e)),
-          action.education,
         ],
       };
     }
