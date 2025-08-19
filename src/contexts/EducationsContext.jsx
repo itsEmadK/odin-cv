@@ -33,10 +33,10 @@ export default function EducationsProvider({ children }) {
         dispatch({ type: 'clear' });
       },
       loadDefaults: () => {
-        dispatch({ type: 'loadDefault' });
+        dispatch({ type: 'loadDefaults' });
       },
-      toggleEducationVisibility: () => {
-        dispatch({ type: 'toggleEducationVisibility' });
+      toggleEducationVisibility: (id) => {
+        dispatch({ type: 'toggleEducationVisibility', id });
       },
     };
   }, []);
@@ -81,8 +81,8 @@ function reducer(state, action) {
     case 'toggleEducationVisibility': {
       return {
         ...state,
-        hiddenJobIds: state.hiddenEducationIds.includes(action.id)
-          ? state.hiddenEducationIds.filter((e) => e.id !== action.id)
+        hiddenEducationIds: state.hiddenEducationIds.includes(action.id)
+          ? state.hiddenEducationIds.filter((eid) => eid !== action.id)
           : [...state.hiddenEducationIds, action.id],
       };
     }

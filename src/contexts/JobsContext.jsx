@@ -30,7 +30,7 @@ export default function JobsProvider({ children }) {
         dispatch({ type: 'clear' });
       },
       loadDefaults: () => {
-        dispatch({ type: 'loadDefault' });
+        dispatch({ type: 'loadDefaults' });
       },
       toggleJobVisibility: (id) => {
         dispatch({ type: 'toggleJobVisibility', id });
@@ -60,7 +60,7 @@ function reducer(state, action) {
     case 'updateJob': {
       return {
         ...state,
-        ...state.jobs.map((j) => (j.id === action.job.id ? action.job : j)),
+        jobs: state.jobs.map((j) => (j.id === action.job.id ? action.job : j)),
       };
     }
     case 'clear': {
@@ -76,7 +76,7 @@ function reducer(state, action) {
       return {
         ...state,
         hiddenJobIds: state.hiddenJobIds.includes(action.id)
-          ? state.hiddenJobIds.filter((j) => j.id !== action.id)
+          ? state.hiddenJobIds.filter((jid) => jid !== action.id)
           : [...state.hiddenJobIds, action.id],
       };
     }

@@ -33,6 +33,12 @@ export default function PersonalDetailsProvider({ children }) {
       updateDetails: (details) => {
         dispatch({ type: 'updateDetails', details });
       },
+      clear: () => {
+        dispatch({ type: 'clear' });
+      },
+      loadDefaults: () => {
+        dispatch({ type: 'loadDefaults' });
+      },
     };
   }, []);
   return (
@@ -59,7 +65,13 @@ function reducer(state, action) {
       return { ...state, email: action.email };
     }
     case 'updatePersonalDetails': {
-      return action.details;
+      return { ...state, ...action.details };
+    }
+    case 'clear': {
+      return { name: '', email: '', phone: '', address: '' };
+    }
+    case 'loadDefaults': {
+      return { ...state, ...initialState };
     }
     default: {
       throw new Error(`${action.type} is not supported.`);
