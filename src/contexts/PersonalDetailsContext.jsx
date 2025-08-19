@@ -64,7 +64,7 @@ function reducer(state, action) {
     case 'updateEmail': {
       return { ...state, email: action.email };
     }
-    case 'updatePersonalDetails': {
+    case 'updateDetails': {
       return { ...state, ...action.details };
     }
     case 'clear': {
