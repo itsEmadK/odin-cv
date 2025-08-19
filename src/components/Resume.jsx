@@ -1,3 +1,6 @@
+import { useEducations } from '../contexts/EducationsContext';
+import { useJobs } from '../contexts/JobsContext';
+import { usePersonalDetails } from '../contexts/PersonalDetailsContext';
 import '../styles/resume.css';
 
 function ResumeHeader({ name, email, phone, address }) {
@@ -62,10 +65,7 @@ function ResumeBody({ educations, jobs }) {
             }
 
             return (
-              <li
-                key={job.company + job.startDate + job.endDate + job.role}
-                className="job-item"
-              >
+              <li key={job.company + job.startDate + job.endDate + job.role} className="job-item">
                 <p className="date">
                   {formattedStartDate} - {formattedEndDate}
                 </p>
@@ -82,9 +82,11 @@ function ResumeBody({ educations, jobs }) {
   );
 }
 
-export default function Resume({ person, headerPosition }) {
+export default function Resume({ headerPosition }) {
   let headerPosClassName = '';
-
+  const personalDetails = usePersonalDetails();
+  const educations = useEducations();
+  const jobs = useJobs();
   if (headerPosition === 'top') {
     headerPosClassName = 'header-on-top';
   } else if (headerPosition === 'left') {
@@ -96,15 +98,12 @@ export default function Resume({ person, headerPosition }) {
   return (
     <div className={'resume ' + headerPosClassName}>
       <ResumeHeader
-        name={person.name}
-        email={person.email}
-        phone={person.phone}
-        address={person.address}
+        name={personalDetails.name}
+        email={personalDetails.email}
+        phone={personalDetails.phone}
+        address={personalDetails.address}
       ></ResumeHeader>
-      <ResumeBody
-        educations={person.educations}
-        jobs={person.jobs}
-      ></ResumeBody>
+      <ResumeBody educations={educations} jobs={jobs}></ResumeBody>
     </div>
   );
 }
